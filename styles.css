@@ -1,8 +1,13 @@
 :root {
   --bg: #0f172a; 
   --fg: #e2e8f0; 
-  --accent: #38bdf8;
+  --accent: #2f4156;
   --maxw: 960px;
+  --card-bg: #eef2f4;
+  --card-border: rgba(15, 23, 42, 0.12);
+  --plank: #5a4b36;
+  --plank-edge: #4b3f2e;
+  --ground: #93a4a7;
 }
 
 html, body { height: 100%; }
@@ -29,11 +34,14 @@ body {
 }
 
 .simulation-root {
-  min-height: 360px;
-  border: 1px dashed rgba(226, 232, 240, 0.3);
-  border-radius: 8px;
+  min-height: 520px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
   display: grid;
   place-items: center;
+  position: relative;
+  overflow: hidden;
 }
 
 /* Seesaw base layout */
@@ -49,12 +57,13 @@ body {
 
 .seesaw__plank {
   width: var(--plank-length);
-  height: 10px;
-  background: rgba(226, 232, 240, 0.85);
-  border-radius: 6px;
+  height: 16px;
+  background: var(--plank);
+  border-radius: 4px;
   position: relative;
   transform-origin: 50% 50%;
   cursor: pointer; 
+  box-shadow: inset 0 -1px 0 var(--plank-edge);
 }
 
 .seesaw__objects {
@@ -67,10 +76,21 @@ body {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: calc(50% + 10px);
+  top: calc(50% + 12px);
   width: 0;
   height: 0;
   border-left: 12px solid transparent;
   border-right: 12px solid transparent;
   border-top: 22px solid var(--accent);
+}
+
+.ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 96px;
+  background: var(--ground);
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
 }
