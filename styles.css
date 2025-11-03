@@ -1,0 +1,35 @@
+:root {
+  --bg: #0f172a; 
+  --fg: #e2e8f0; 
+  --accent: #38bdf8;
+  --maxw: 960px;
+}
+
+html, body { height: 100%; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font: 16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  display: grid;
+  place-items: center;
+}
+
+.app {
+  width: 100%;
+  max-width: var(--maxw);
+  padding: 24px;
+}
+
+.app__title {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  margin-bottom: 16px;
+}
+
+.simulation-root {
+  min-height: 360px;
+  border: 1px dashed rgba(226, 232, 240, 0.3);
+  border-radius: 8px;
+}
