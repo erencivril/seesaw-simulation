@@ -59,6 +59,33 @@ function renderObjects() {
   dom.objectsLayer.appendChild(frag);
 }
 
+// Physics helpers
+function computeTorques(objects) {
+  let leftTorque = 0;
+  let rightTorque = 0;
+  for (const obj of objects) {
+    const distance = Math.abs(obj.xFromCenterPx);
+    const torque = obj.weightKg * distance;
+    if (obj.xFromCenterPx < 0) leftTorque += torque; else rightTorque += torque;
+  }
+  return { leftTorque, rightTorque };
+}
+
+function computeAngleDeg(leftTorque, rightTorque) {
+  const raw = (rightTorque - leftTorque) / TORQUE_SCALE;
+  return clamp(raw, -MAX_ANGLE_DEG, MAX_ANGLE_DEG);
+}
+
+function updatePhysics() {
+  const { leftTorque, rightTorque } = computeTorques(state.objects);
+  state.angleDeg = computeAngleDeg(leftTorque, rightTorque);
+}
+
+function updateAll() {
+  updatePhysics();
+  renderAll();
+}
+
 function onPlankClick(event) {
   if (!dom.plank) return;
   const rect = dom.plank.getBoundingClientRect();
@@ -72,7 +99,7 @@ function onPlankClick(event) {
     weightKg: randomIntInclusive(1, 10)
   };
   state.objects.push(newObj);
-  renderAll();
+  updateAll();
 }
 
 // Init
@@ -82,6 +109,6 @@ document.addEventListener('DOMContentLoaded', () => {
   dom.plank = document.getElementById('seesaw-plank');
   dom.objectsLayer = document.getElementById('objects-layer');
 
-  renderAll();
+  updateAll();
   if (dom.plank) dom.plank.addEventListener('click', onPlankClick);
 });
