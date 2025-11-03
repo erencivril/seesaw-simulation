@@ -70,6 +70,21 @@ body {
   position: absolute;
   inset: 0;
   pointer-events: none; 
+  overflow: visible;
+}
+
+.seesaw__object {
+  position: absolute;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  margin-left: -9px; 
+  background: #6ee7b7; 
+  border: 2px solid rgba(0, 0, 0, 0.25);
+  border-radius: 50%;
+  transform: translateY(-18px); 
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+  pointer-events: none;
 }
 
 .seesaw__pivot {
