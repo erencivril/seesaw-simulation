@@ -32,4 +32,45 @@ body {
   min-height: 360px;
   border: 1px dashed rgba(226, 232, 240, 0.3);
   border-radius: 8px;
+  display: grid;
+  place-items: center;
+}
+
+/* Seesaw base layout */
+.seesaw {
+  --plank-length: 400px;
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  height: 220px;
+  display: grid;
+  place-items: center;
+}
+
+.seesaw__plank {
+  width: var(--plank-length);
+  height: 10px;
+  background: rgba(226, 232, 240, 0.85);
+  border-radius: 6px;
+  position: relative;
+  transform-origin: 50% 50%;
+  cursor: pointer; 
+}
+
+.seesaw__objects {
+  position: absolute;
+  inset: 0;
+  pointer-events: none; 
+}
+
+.seesaw__pivot {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: calc(50% + 10px);
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 22px solid var(--accent);
 }
