@@ -149,30 +149,27 @@ function onPlankClick(event) {
   updateAll();
 }
 
-function addHistoryEntry(weightKg, xFromCenterPx) {
-  if (!dom.historyLog) return;
-  
-  const side = xFromCenterPx < 0 ? 'left' : 'right';
-  const distance = Math.abs(Math.round(xFromCenterPx));
-  
-  const entry = document.createElement('div');
-  entry.className = 'history__entry';
-  entry.textContent = `🪵 ${weightKg}kg dropped on ${side} side at ${distance}px from center`;
-  
-  dom.historyLog.prepend(entry);
-}
-
-function clearHistory() {
-  if (!dom.historyLog) return;
-  dom.historyLog.innerHTML = '';
-}
-
 function resetSeesaw() {
   state.objects = [];
   state.angleDeg = 0;
   clearHistory();
   generateNextWeight();
   updateAll();
+}
+
+function addHistoryEntry(weightKg, xFromCenterPx) {
+  if (!dom.historyLog) return;
+  const side = xFromCenterPx < 0 ? 'left' : 'right';
+  const distance = Math.abs(Math.round(xFromCenterPx));
+  const entry = document.createElement('div');
+  entry.className = 'history__entry';
+  entry.textContent = `📦 ${weightKg}kg dropped on ${side} side at ${distance}px from center`;
+  dom.historyLog.prepend(entry);
+}
+
+function clearHistory() {
+  if (!dom.historyLog) return;
+  dom.historyLog.innerHTML = '';
 }
 
 
