@@ -46,11 +46,28 @@ function renderTilt() {
   dom.plank.style.transform = `rotate(${state.angleDeg}deg)`;
 }
 
+function sanitizeObject(obj) {
+  const x = Number(obj.xFromCenterPx);
+  const w = Number(obj.weightKg);
+  if (!Number.isFinite(x) || !Number.isFinite(w)) return null;
+  return { xFromCenterPx: x, weightKg: w };
+}
+
+function getValidObjects() {
+  if (!Array.isArray(state.objects)) return [];
+  const valid = [];
+  for (const o of state.objects) {
+    const s = sanitizeObject(o);
+    if (s) valid.push(s);
+  }
+  return valid;
+}
+
 function calculateSideWeights() {
   let leftWeight = 0;
   let rightWeight = 0;
   
-  for (const obj of state.objects) {
+  for (const obj of getValidObjects()) {
     if (obj.xFromCenterPx < 0) {
       leftWeight += obj.weightKg;
     } else {
@@ -90,14 +107,14 @@ function renderObjects() {
   dom.objectsLayer.innerHTML = '';
   const half = getHalfPlankLength();
   const frag = document.createDocumentFragment();
-  for (const obj of state.objects) {
+  for (const obj of getValidObjects()) {
     const el = document.createElement('div');
     el.className = 'seesaw__object';
     const leftPx = obj.xFromCenterPx + half;
     el.style.left = leftPx + 'px';
     const label = document.createElement('span');
     label.className = 'seesaw__object-label';
-    label.textContent = `${obj.weightKg}kg`;
+    label.textContent = `${Number(obj.weightKg).toString()}kg`;
     el.appendChild(label);
     frag.appendChild(el);
   }
@@ -108,7 +125,7 @@ function renderObjects() {
 function computeTorques(objects) {
   let leftTorque = 0;
   let rightTorque = 0;
-  for (const obj of objects) {
+  for (const obj of getValidObjects()) {
     const distance = Math.abs(obj.xFromCenterPx);
     const torque = obj.weightKg * distance;
     if (obj.xFromCenterPx < 0) leftTorque += torque; else rightTorque += torque;
@@ -141,12 +158,13 @@ function onPlankClick(event) {
 
   const newObj = {
     xFromCenterPx: clamp(xFromCenter, -width / 2, width / 2),
-    weightKg: state.nextWeightKg
+    weightKg: Number(state.nextWeightKg) || randomIntInclusive(1, 10)
   };
   state.objects.push(newObj);
   addHistoryEntry(newObj.weightKg, newObj.xFromCenterPx);
   generateNextWeight();
   updateAll();
+  saveState();
 }
 
 function resetSeesaw() {
@@ -155,6 +173,33 @@ function resetSeesaw() {
   clearHistory();
   generateNextWeight();
   updateAll();
+  saveState();
+}
+
+function saveState() {
+  try {
+    const stateToSave = {
+      objects: getValidObjects(),
+      nextWeightKg: state.nextWeightKg
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(stateToSave));
+  } catch (error) {
+    console.error('Failed to save state:', error);
+  }
+}
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return false;
+    const parsed = JSON.parse(saved);
+    state.objects = Array.isArray(parsed.objects) ? parsed.objects : [];
+    state.nextWeightKg = typeof parsed.nextWeightKg === 'number' ? parsed.nextWeightKg : randomIntInclusive(1, 10);
+    return true;
+  } catch (error) {
+    console.error('Failed to load state:', error);
+    return false;
+  }
 }
 
 function addHistoryEntry(weightKg, xFromCenterPx) {
@@ -185,7 +230,11 @@ document.addEventListener('DOMContentLoaded', () => {
   dom.resetBtn = document.getElementById('reset-btn');
   dom.historyLog = document.getElementById('history-log');
 
-  generateNextWeight();
+  const isLoaded = loadState();
+  if (!isLoaded) {
+    generateNextWeight();
+  }
+  state.objects = getValidObjects();
   updateAll();
   if (dom.plank) dom.plank.addEventListener('click', onPlankClick);
   if (dom.resetBtn) dom.resetBtn.addEventListener('click', resetSeesaw);
