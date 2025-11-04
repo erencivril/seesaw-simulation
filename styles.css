@@ -108,15 +108,25 @@ body {
 .seesaw__object {
   position: absolute;
   top: 50%;
-  width: 18px;
-  height: 18px;
-  margin-left: -9px; 
-  background: #6ee7b7; 
+  width: 48px;
+  height: 48px;
+  margin-left: -24px; 
+  background: #f97316; 
   border: 2px solid rgba(0, 0, 0, 0.25);
   border-radius: 50%;
-  transform: translateY(-18px); 
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+  transform: translateY(-48px); 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seesaw__object-label {
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  user-select: none;
 }
 
 .seesaw__pivot {

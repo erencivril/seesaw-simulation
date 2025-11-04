@@ -93,6 +93,10 @@ function renderObjects() {
     el.className = 'seesaw__object';
     const leftPx = obj.xFromCenterPx + half;
     el.style.left = leftPx + 'px';
+    const label = document.createElement('span');
+    label.className = 'seesaw__object-label';
+    label.textContent = `${obj.weightKg}kg`;
+    el.appendChild(label);
     frag.appendChild(el);
   }
   dom.objectsLayer.appendChild(frag);
