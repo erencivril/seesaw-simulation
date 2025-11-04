@@ -8,7 +8,8 @@ const STORAGE_KEY = 'seesaw-state-v1';
 
 const state = {
   objects: [],      
-  angleDeg: 0
+  angleDeg: 0,
+  nextWeightKg: 0
 };
 
 const dom = {
@@ -58,6 +59,13 @@ function calculateSideWeights() {
   return { leftWeight, rightWeight };
 }
 
+function generateNextWeight() {
+  state.nextWeightKg = randomIntInclusive(1, 10);
+  if (dom.nextWeight) {
+    dom.nextWeight.textContent = `${state.nextWeightKg} kg`;
+  }
+}
+
 function updateStats() {
   if (!dom.leftWeight || !dom.rightWeight || !dom.tiltAngle) return;
   
@@ -66,6 +74,7 @@ function updateStats() {
   dom.leftWeight.textContent = `${leftWeight.toFixed(1)} kg`;
   dom.rightWeight.textContent = `${rightWeight.toFixed(1)} kg`;
   dom.tiltAngle.textContent = `${state.angleDeg.toFixed(1)}°`;
+  dom.nextWeight.textContent = `${state.nextWeightKg} kg`;
 }
 
 function renderAll() {
@@ -126,9 +135,10 @@ function onPlankClick(event) {
 
   const newObj = {
     xFromCenterPx: clamp(xFromCenter, -width / 2, width / 2),
-    weightKg: randomIntInclusive(1, 10)
+    weightKg: state.nextWeightKg
   };
   state.objects.push(newObj);
+  generateNextWeight();
   updateAll();
 }
 
@@ -143,6 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
   dom.nextWeight = document.getElementById('next-weight');
   dom.tiltAngle = document.getElementById('tilt-angle');
 
+  generateNextWeight();
   updateAll();
   if (dom.plank) dom.plank.addEventListener('click', onPlankClick);
 });
