@@ -151,3 +151,43 @@ body {
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
 }
+
+.controls {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 150ms ease;
+  font-family: inherit;
+}
+
+.btn--reset {
+  background: #1e293b;
+  color: white;
+}
+
+.btn--reset:hover {
+  background: #334155;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn--reset:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn__icon {
+  flex-shrink: 0;
+}

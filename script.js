@@ -20,7 +20,8 @@ const dom = {
   leftWeight: null,
   rightWeight: null,
   nextWeight: null,
-  tiltAngle: null
+  tiltAngle: null,
+  resetBtn: null
 };
 
 function clamp(value, min, max) {
@@ -146,6 +147,13 @@ function onPlankClick(event) {
   updateAll();
 }
 
+function resetSeesaw() {
+  state.objects = [];
+  state.angleDeg = 0;
+  generateNextWeight();
+  updateAll();
+}
+
 
 document.addEventListener('DOMContentLoaded', () => {
   dom.root = document.getElementById('simulation-root');
@@ -156,8 +164,10 @@ document.addEventListener('DOMContentLoaded', () => {
   dom.rightWeight = document.getElementById('right-weight');
   dom.nextWeight = document.getElementById('next-weight');
   dom.tiltAngle = document.getElementById('tilt-angle');
+  dom.resetBtn = document.getElementById('reset-btn');
 
   generateNextWeight();
   updateAll();
   if (dom.plank) dom.plank.addEventListener('click', onPlankClick);
+  if (dom.resetBtn) dom.resetBtn.addEventListener('click', resetSeesaw);
 });
