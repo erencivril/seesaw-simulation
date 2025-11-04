@@ -9,6 +9,25 @@
 <body>
   <main class="app">
     <h1 class="app__title">Seesaw Simulation</h1>
+    <div class="stats-panel">
+      <div class="stat-card">
+        <div class="stat-card__label">LEFT WEIGHT</div>
+        <div class="stat-card__value" id="left-weight">0.0 kg</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__label">NEXT WEIGHT</div>
+        <div class="stat-card__value" id="next-weight">0 kg</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__label">RIGHT WEIGHT</div>
+        <div class="stat-card__value" id="right-weight">0.0 kg</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__label">TILT ANGLE</div>
+        <div class="stat-card__value" id="tilt-angle">0.0°</div>
+      </div>
+    </div>
+
     <div id="simulation-root" class="simulation-root">
       <div class="seesaw" id="seesaw" aria-label="Seesaw">
         <div class="seesaw__pivot" aria-hidden="true"></div>

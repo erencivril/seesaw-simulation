@@ -15,7 +15,11 @@ const dom = {
   root: null,
   seesaw: null,
   plank: null,
-  objectsLayer: null
+  objectsLayer: null,
+  leftWeight: null,
+  rightWeight: null,
+  nextWeight: null,
+  tiltAngle: null
 };
 
 function clamp(value, min, max) {
@@ -39,9 +43,35 @@ function renderTilt() {
   dom.plank.style.transform = `rotate(${state.angleDeg}deg)`;
 }
 
+function calculateSideWeights() {
+  let leftWeight = 0;
+  let rightWeight = 0;
+  
+  for (const obj of state.objects) {
+    if (obj.xFromCenterPx < 0) {
+      leftWeight += obj.weightKg;
+    } else {
+      rightWeight += obj.weightKg;
+    }
+  }
+  
+  return { leftWeight, rightWeight };
+}
+
+function updateStats() {
+  if (!dom.leftWeight || !dom.rightWeight || !dom.tiltAngle) return;
+  
+  const { leftWeight, rightWeight } = calculateSideWeights();
+  
+  dom.leftWeight.textContent = `${leftWeight.toFixed(1)} kg`;
+  dom.rightWeight.textContent = `${rightWeight.toFixed(1)} kg`;
+  dom.tiltAngle.textContent = `${state.angleDeg.toFixed(1)}°`;
+}
+
 function renderAll() {
   renderTilt();
   renderObjects();
+  updateStats();
 }
 
 function renderObjects() {
@@ -102,12 +132,16 @@ function onPlankClick(event) {
   updateAll();
 }
 
-// Init
+
 document.addEventListener('DOMContentLoaded', () => {
   dom.root = document.getElementById('simulation-root');
   dom.seesaw = document.getElementById('seesaw');
   dom.plank = document.getElementById('seesaw-plank');
   dom.objectsLayer = document.getElementById('objects-layer');
+  dom.leftWeight = document.getElementById('left-weight');
+  dom.rightWeight = document.getElementById('right-weight');
+  dom.nextWeight = document.getElementById('next-weight');
+  dom.tiltAngle = document.getElementById('tilt-angle');
 
   updateAll();
   if (dom.plank) dom.plank.addEventListener('click', onPlankClick);
