@@ -21,7 +21,8 @@ const dom = {
   rightWeight: null,
   nextWeight: null,
   tiltAngle: null,
-  resetBtn: null
+  resetBtn: null,
+  historyLog: null
 };
 
 function clamp(value, min, max) {
@@ -143,13 +144,33 @@ function onPlankClick(event) {
     weightKg: state.nextWeightKg
   };
   state.objects.push(newObj);
+  addHistoryEntry(newObj.weightKg, newObj.xFromCenterPx);
   generateNextWeight();
   updateAll();
+}
+
+function addHistoryEntry(weightKg, xFromCenterPx) {
+  if (!dom.historyLog) return;
+  
+  const side = xFromCenterPx < 0 ? 'left' : 'right';
+  const distance = Math.abs(Math.round(xFromCenterPx));
+  
+  const entry = document.createElement('div');
+  entry.className = 'history__entry';
+  entry.textContent = `🪵 ${weightKg}kg dropped on ${side} side at ${distance}px from center`;
+  
+  dom.historyLog.prepend(entry);
+}
+
+function clearHistory() {
+  if (!dom.historyLog) return;
+  dom.historyLog.innerHTML = '';
 }
 
 function resetSeesaw() {
   state.objects = [];
   state.angleDeg = 0;
+  clearHistory();
   generateNextWeight();
   updateAll();
 }
@@ -165,6 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
   dom.nextWeight = document.getElementById('next-weight');
   dom.tiltAngle = document.getElementById('tilt-angle');
   dom.resetBtn = document.getElementById('reset-btn');
+  dom.historyLog = document.getElementById('history-log');
 
   generateNextWeight();
   updateAll();

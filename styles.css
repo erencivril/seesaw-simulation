@@ -191,3 +191,40 @@ body {
 .btn__icon {
   flex-shrink: 0;
 }
+.history {
+  margin-top: 24px;
+}
+
+.history__log {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 16px;
+  min-height: 80px;
+  max-height: 200px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.history__entry {
+  padding: 10px 12px;
+  background: white;
+  border-left: 3px solid #3b82f6;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.4;
+}
+
+.history__log:empty::before {
+  content: 'No objects placed yet. Click on the seesaw to add objects!';
+  color: #94a3b8;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+}
